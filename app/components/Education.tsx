@@ -10,7 +10,7 @@ const educationData = [
     description: "Focusing on advanced data science, machine learning, and business analytics. Participating in various data science projects and research initiatives."
   },
   {
-    school: "Shanghai Jiao Tong University",
+    school: "Shanghai University of Finance and Economics",
     degree: "Bachelor of Data Science",
     period: "2020 - 2024",
     description: "Completed coursework in statistics, machine learning, data structures, and algorithms. Participated in multiple research projects and maintained a high GPA."
