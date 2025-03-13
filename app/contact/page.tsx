@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
+import emailjs from '@emailjs/browser'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,10 +12,47 @@ export default function Contact() {
     message: ''
   })
 
+  const [status, setStatus] = useState({
+    type: '',
+    message: ''
+  })
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically handle the form submission
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    setStatus({ type: '', message: '' })
+
+    try {
+      const result = await emailjs.send(
+        'service_eq7e9lg',
+        'template_9b0dhbm',
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: 'Oliver',
+          reply_to: formData.email,
+        },
+        'XHCXsBMMIuQdH2WY9'
+      )
+
+      if (result.status === 200) {
+        setStatus({
+          type: 'success',
+          message: 'Thank you for your message! I will get back to you soon.'
+        })
+        setFormData({ name: '', email: '', message: '' })
+      }
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: 'Oops! Something went wrong. Please try again later.'
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,6 +95,7 @@ export default function Contact() {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-white"
                   placeholder="Your name"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -72,6 +111,7 @@ export default function Contact() {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-white"
                   placeholder="your.email@example.com"
                   required
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -87,13 +127,20 @@ export default function Contact() {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-white"
                   placeholder="Your message..."
                   required
+                  disabled={isSubmitting}
                 ></textarea>
               </div>
+              {status.message && (
+                <div className={`p-4 rounded-lg ${status.type === 'success' ? 'bg-green-600/20 text-green-400' : 'bg-red-600/20 text-red-400'}`}>
+                  {status.message}
+                </div>
+              )}
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300"
+                className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={isSubmitting}
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </motion.div>
@@ -133,7 +180,7 @@ export default function Contact() {
                   className="flex items-center space-x-3 text-gray-300 hover:text-white transition duration-300"
                 >
                   <FaEnvelope className="text-2xl" />
-                  <span>Email : ouyang2066@gmail.com</span>
+                  <span>Email</span>
                 </a>
               </div>
             </div>
