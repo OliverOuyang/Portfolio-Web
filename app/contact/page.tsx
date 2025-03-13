@@ -133,7 +133,7 @@ export default function Contact() {
                   className="flex items-center space-x-3 text-gray-300 hover:text-white transition duration-300"
                 >
                   <FaEnvelope className="text-2xl" />
-                  <span>Email</span>
+                  <span>Email : ouyang2066@gmail.com</span>
                 </a>
               </div>
             </div>
