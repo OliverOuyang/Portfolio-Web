@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
 import emailjs from '@emailjs/browser'
 
 export default function Contact() {
+  useEffect(() => {
+    emailjs.init('XHCXsBMMIuQdH2WY9')
+  }, [])
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,17 +29,17 @@ export default function Contact() {
     setStatus({ type: '', message: '' })
 
     try {
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        to_name: 'Oliver',
+      }
+
       const result = await emailjs.send(
         'service_eq7e9lg',
         'template_9b0dhbm',
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_name: 'Oliver',
-          reply_to: formData.email,
-        },
-        'XHCXsBMMIuQdH2WY9'
+        templateParams
       )
 
       if (result.status === 200) {
