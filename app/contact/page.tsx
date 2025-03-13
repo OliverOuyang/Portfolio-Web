@@ -111,7 +111,7 @@ export default function Contact() {
               </p>
               <div className="space-y-4">
                 <a
-                  href="https://github.com/Oliver815"
+                  href="https://github.com/OliverOuyang"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 text-gray-300 hover:text-white transition duration-300"
