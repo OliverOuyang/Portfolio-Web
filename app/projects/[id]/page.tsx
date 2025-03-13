@@ -241,27 +241,6 @@ export default function ProjectDetail() {
             </ul>
           </div>
 
-          {project.visualizations && (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4">Visualizations</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.visualizations.map((viz, index) => (
-                  <div key={index} className="relative">
-                    <Image
-                      src={viz.url}
-                      alt={viz.title}
-                      width={500}
-                      height={300}
-                      className="rounded-lg"
-                    />
-                    <h3 className="text-lg font-semibold mt-2">{viz.title}</h3>
-                    <p className="text-gray-400">{viz.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {project.id === 'streaming-platform-analytics' && biliData.length > 0 && (
             <div className="bg-gray-800 rounded-lg p-6">
               <h2 className="text-2xl font-semibold mb-4">Interactive Data Analysis</h2>
