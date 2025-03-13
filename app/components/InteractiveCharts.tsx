@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import type { PlotData, Layout } from 'plotly.js'
+
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 
 interface ChartProps {
@@ -54,7 +56,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Likes',
           marker: { color: '#3B82F6', size: 6 }
-        },
+        } as PlotData,
         {
           x: likeTrend.x,
           y: likeTrend.y,
@@ -62,7 +64,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Trend',
           line: { color: '#3B82F6', dash: 'dash' }
-        }
+        } as PlotData
       ],
       layout: {
         title: {
@@ -76,7 +78,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
         font: { color: '#fff' },
         showlegend: true,
         margin: { t: 40 }
-      }
+      } as Partial<Layout>
     },
     {
       data: [
@@ -87,7 +89,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Coins',
           marker: { color: '#10B981', size: 6 }
-        },
+        } as PlotData,
         {
           x: coinTrend.x,
           y: coinTrend.y,
@@ -95,7 +97,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Trend',
           line: { color: '#10B981', dash: 'dash' }
-        }
+        } as PlotData
       ],
       layout: {
         title: {
@@ -109,7 +111,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
         font: { color: '#fff' },
         showlegend: true,
         margin: { t: 40 }
-      }
+      } as Partial<Layout>
     },
     {
       data: [
@@ -120,7 +122,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Favorites',
           marker: { color: '#F59E0B', size: 6 }
-        },
+        } as PlotData,
         {
           x: favoriteTrend.x,
           y: favoriteTrend.y,
@@ -128,7 +130,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           type: 'scatter',
           name: 'Trend',
           line: { color: '#F59E0B', dash: 'dash' }
-        }
+        } as PlotData
       ],
       layout: {
         title: {
@@ -142,13 +144,13 @@ export default function InteractiveCharts({ data }: ChartProps) {
         font: { color: '#fff' },
         showlegend: true,
         margin: { t: 40 }
-      }
+      } as Partial<Layout>
     }
   ];
 
   // Process data for UP主 analysis
   const upData = Object.entries(
-    data.reduce((acc, curr) => {
+    data.reduce((acc: { [key: string]: { name: string; views: number } }, curr) => {
       if (!acc[curr.mid]) {
         acc[curr.mid] = {
           name: curr.name,
@@ -157,7 +159,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
       }
       acc[curr.mid].views += curr.view;
       return acc;
-    }, {} as any)
+    }, {})
   )
     .sort((a, b) => b[1].views - a[1].views)
     .slice(0, 10);
@@ -172,7 +174,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
       textposition: 'auto',
       hovertemplate: '%{x}<br>Views: %{y:,.0f}<extra></extra>',
       marker: { color: '#3B82F6' }
-    }],
+    } as PlotData],
     layout: {
       title: {
         text: 'Top 10 Content Creators by Total Views',
@@ -191,19 +193,19 @@ export default function InteractiveCharts({ data }: ChartProps) {
       font: { color: '#fff' },
       showlegend: false,
       margin: { b: 150, l: 100 }
-    }
+    } as Partial<Layout>
   };
 
   // Calculate category performance
   const categoryData = Object.entries(
-    data.reduce((acc, curr) => {
+    data.reduce((acc: { [key: string]: { views: number; videos: number } }, curr) => {
       if (!acc[curr.category]) {
         acc[curr.category] = { views: 0, videos: 0 }
       }
       acc[curr.category].views += curr.view;
       acc[curr.category].videos++;
       return acc;
-    }, {} as any)
+    }, {})
   )
     .sort((a, b) => b[1].views - a[1].views)
     .map(([category, data]) => ({
@@ -225,7 +227,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
           `hsl(${(i * 360) / categoryData.length}, 70%, 50%)`
         )
       }
-    }],
+    } as PlotData],
     layout: {
       title: {
         text: 'Category Performance Analysis: Total Views by Content Type',
@@ -244,7 +246,7 @@ export default function InteractiveCharts({ data }: ChartProps) {
       font: { color: '#fff' },
       showlegend: false,
       margin: { b: 150, l: 100 }
-    }
+    } as Partial<Layout>
   };
 
   return (
